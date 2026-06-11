@@ -1,0 +1,133 @@
+import { Sora, Inter } from "next/font/google";
+import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import FloatingButtons from "@/components/FloatingButtons";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { SITE } from "@/lib/site-data";
+
+const sora = Sora({
+  subsets: ["latin"],
+  variable: "--font-sora",
+  weight: ["400", "600", "700", "800"],
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+export const metadata = {
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: `${SITE.name} | New & Used Mobiles, Repairs, Accessories in Gujrat`,
+    template: `%s | ${SITE.name}`,
+  },
+  description:
+    "Alihassan Mobile Store in Gujrat, Punjab offers new & used smartphones, mobile accessories, screen replacement, repair, software updates, unlocking, and phone buying & selling. Owned by Ali Hassan.",
+  keywords: [
+    "Alihassan Mobile Store",
+    "mobile shop Gujrat",
+    "mobile repair Gujrat",
+    "used phones Gujrat",
+    "screen replacement Gujrat Punjab",
+    "mobile accessories Gujrat",
+    "Ali Hassan mobile store",
+    "buy sell mobile phones Gujrat",
+  ],
+  authors: [{ name: "Ali Hassan" }],
+  openGraph: {
+    type: "website",
+    locale: "en_PK",
+    url: SITE.url,
+    siteName: SITE.name,
+    title: `${SITE.name} | New & Used Mobiles, Repairs, Accessories in Gujrat`,
+    description:
+      "Your trusted mobile shop in Gujrat, Punjab — new & used phones, accessories, repairs, screen replacement, unlocking and more.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: SITE.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE.name} | Mobile Shop in Gujrat`,
+    description:
+      "New & used phones, accessories, repairs, screen replacement and more in Gujrat, Punjab.",
+    images: ["/og-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export default function RootLayout({ children }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ElectronicsStore",
+    name: SITE.name,
+    image: `${SITE.url}/og-image.jpg`,
+    "@id": SITE.url,
+    url: SITE.url,
+    telephone: SITE.phone,
+    email: SITE.email,
+    priceRange: "$$",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Main Bazaar Road",
+      addressLocality: SITE.city,
+      addressRegion: SITE.region,
+      addressCountry: "PK",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 32.5739,
+      longitude: 74.0789,
+    },
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
+      opens: "10:00",
+      closes: "21:00",
+    },
+    sameAs: [SITE.social.facebook, SITE.social.instagram, SITE.social.youtube],
+    founder: {
+      "@type": "Person",
+      name: SITE.owner,
+    },
+  };
+
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body className={`${sora.variable} ${inter.variable} font-body`}>
+        <ThemeProvider>
+          <Header />
+          <main className="pt-[76px]">{children}</main>
+          <Footer />
+          <FloatingButtons />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
